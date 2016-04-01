@@ -21,17 +21,26 @@ meteo_distance <- function(data,
                            latName = 'latitude',
                            longName = 'longitude',
                            units = 'deg',
-                           radius,
-                           limit = 1) {
+                           radius=NULL,
+                           limit = NULL) {
   
-  meteo_process_geographic_data(
+  data <- meteo_process_geographic_data(
     data = data,
     lat = lat,
     long = long,
     latName = latName,
-    longName = longName,
-  )[1:limit, ]
+    longName = longName
+  )
   
+  if(!is.null(radius)) {
+    print('test')
+    data <- data[data$distance < radius,] 
+  }
+  
+  if(!is.null(limit)) {
+    data <- data[1:min(limit,nrow(data)),]
+  }
+  return(data)
 }
 
 #' meteo_process_geographic_data
